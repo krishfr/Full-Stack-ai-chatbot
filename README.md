@@ -89,10 +89,6 @@ This guarantees uptime, cost control, and flexibility.
 ### Clone Repository
 
 ```bash
-git clone https://github.com/krishfr/Full-Stack-ai-chatbot.git
-cd ai-chatbot
-
-
 Clone Repository
 git clone https://github.com/krishfr/Full-Stack-ai-chatbot.git
 cd ai-chatbot
