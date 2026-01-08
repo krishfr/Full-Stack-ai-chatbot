@@ -1,57 +1,30 @@
 # AI ChatBot
 
-A production-ready full-stack AI chatbot application with pluggable AI providers, persistent conversation storage, and graceful fallback mechanisms.
+A production-ready full-stack AI chatbot with pluggable AI providers, persistent chat storage, and zero-cost local AI support.
 
 ---
 
 ## Overview
 
-This project demonstrates a real-world full-stack architecture for an AI-powered chat application.  
-It addresses production challenges such as API cost control, quota limits, model access, and service availability using a flexible AI provider abstraction layer.
+This project demonstrates a real-world full-stack AI system designed to handle practical production constraints such as API cost, rate limits, and service availability.
 
-The application supports multiple AI backends:
-- OpenAI API
-- Local LLMs via Ollama
-- Demo fallback mode
+The chatbot supports multiple AI execution modes:
+- OpenAI API (cloud-based)
+- Ollama (local LLM, zero cost)
+- Automatic demo fallback (always available)
 
-The system works even without paid API keys.
-
----
-
-## Architecture
-
-### System Design
-
-React Frontend (3000)  
-↓ HTTP / REST  
-Express Backend (5000)  
-↓  
-PostgreSQL (5432) + AI Provider Layer  
-↓  
-OpenAI API or Ollama (Local)
+The application works fully without paid API keys.
 
 ---
 
-### Three-Tier Architecture
+## High-Level Architecture
 
-#### Presentation Layer (React)
-- Component-based UI
-- Context API for authentication
-- Axios with interceptors
-- Protected routes with JWT
-
-#### Application Layer (Express)
-- RESTful API
-- JWT authentication middleware
-- Controller–service separation
-- Centralized error handling
-- AI provider abstraction
-
-#### Data Layer (PostgreSQL)
-- Normalized relational schema
-- Cascading deletes
-- Indexed queries
-- Connection pooling
+Frontend (React, 3000)  
+→ REST API  
+Backend (Node.js, Express, 5000)  
+→ PostgreSQL (Docker, 5432)  
+→ AI Provider Layer  
+→ OpenAI OR Ollama OR Fallback
 
 ---
 
@@ -62,61 +35,55 @@ OpenAI API or Ollama (Local)
 - Express.js
 - PostgreSQL 15
 - pg (node-postgres)
-- JWT, bcryptjs
-- Helmet, CORS
-- Morgan
-- OpenAI SDK (optional)
-- Ollama (optional)
+- JWT authentication
+- bcrypt password hashing
+- Helmet, CORS, Morgan
 
 ### Frontend
 - React 18
-- React Router v6
+- React Router
 - Axios
 - Context API
-- CSS3
+- CSS
 
 ### Infrastructure
-- Docker
-- Docker Compose
+- Docker & Docker Compose
 - dotenv
+- Ollama (optional)
 
 ---
 
 ## AI Provider Design
 
 ### Problem
-
-Initial OpenAI-only implementation introduced:
-- API cost issues
+Using OpenAI directly introduces:
+- API cost
 - Quota limits
 - External dependency
-- Paid API requirement during development
+- Paid API key requirement during development
 
-### Solution: Pluggable AI Architecture
-
-The AI service layer dynamically selects the provider:
-
-```js
-if (OpenAI available) → OpenAI  
-else if (Ollama running) → Local LLM  
-else → Demo fallback
+### Solution
+A pluggable AI service layer:
 
 Setup Instructions
-Prerequisites
+
+Prerequisites:
 
 Node.js 18+
 
-Docker & Docker Compose
+Docker and Docker Compose
 
 Optional: Ollama
 
-1. Clone
+Clone Repository
+
 git clone https://github.com/krishfr/Full-Stack-ai-chatbot.git
 cd ai-chatbot
 
-2. Environment Variables
 
-Backend .env
+Environment Variables
+
+Backend .env (backend/.env or root .env)
 
 PORT=5000
 NODE_ENV=development
@@ -127,99 +94,112 @@ DB_NAME=chatbot_db
 DB_USER=postgres
 DB_PASSWORD=postgres
 
-JWT_SECRET=your-secret-key
+JWT_SECRET=your-secure-secret
 OPENAI_API_KEY=optional
 CORS_ORIGIN=http://localhost:3000
 
 
-Frontend .env
+Frontend .env (frontend/.env)
 
 REACT_APP_API_URL=http://localhost:5000/api
 
-3. Database
 
-Using Docker:
+Database Setup (Docker)
 
 docker-compose up -d postgres
 
-4. Install Dependencies
 
-Backend:
+Install and Run
+
+Backend
 
 cd backend
 npm install
 npm run dev
 
 
-Frontend:
+Frontend
 
 cd frontend
 npm install
 npm start
 
-Running with Ollama
+
+Application runs at:
+http://localhost:3000
+
+Running with Ollama (Local AI)
 
 Install Ollama
 https://ollama.com/download
 
-Pull model:
+Pull model
 
 ollama pull phi3:mini
 
 
-Run Ollama:
+Start Ollama
 
 ollama serve
 
 
-Backend auto-detects Ollama at localhost:11434.
+Backend auto-detects Ollama at:
+http://127.0.0.1:11434
+
+No API key required.
 
 Running Without OpenAI
 
 Do not set OPENAI_API_KEY
 
-Ollama used if available
+Ollama is used if available
 
-Demo mode activates automatically
+Demo fallback activates automatically
+
+The application remains fully functional.
 
 API Endpoints
-Auth
+
+Authentication
 
 POST /api/auth/register
-
 POST /api/auth/login
+GET  /api/auth/profile
 
-GET /api/auth/profile
 
 Chat
 
-POST /api/chat/conversations
-
-GET /api/chat/conversations
-
-GET /api/chat/conversations/:id/messages
-
-POST /api/chat/conversations/:id/messages
-
+POST   /api/chat/conversations
+GET    /api/chat/conversations
+GET    /api/chat/conversations/:id/messages
+POST   /api/chat/conversations/:id/messages
 DELETE /api/chat/conversations/:id
 
-Docker Deployment
 
-Full stack:
+Docker Deployment (Full Stack)
 
 docker-compose up -d --build
+
+
+Services:
+
+PostgreSQL on port 5432
+
+Backend on port 5000
+
+Frontend on port 3000
 
 Security Features
 
 bcrypt password hashing
 
-JWT authentication
+JWT-based authentication
 
-Protected routes
+Protected API routes
 
 Helmet security headers
 
-CORS configuration
+CORS origin control
 
 Parameterized SQL queries
 
@@ -227,22 +207,18 @@ Environment-based secrets
 
 Known Limitations
 
-No message truncation for long conversations
+No WebSockets, HTTP polling only
 
-No WebSockets yet
+Text-only chat
 
-Text-only messages
+Long conversations not truncated
 
-Future Enhancements
+Future Improvements
 
-WebSockets
+WebSocket support
 
 Redis caching
 
 File uploads
 
 Multi-modal AI
-
-Conversation sharing
-
-Better context handling
