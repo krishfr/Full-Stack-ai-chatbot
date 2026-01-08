@@ -89,12 +89,81 @@ This guarantees uptime, cost control, and flexibility.
 ### Clone Repository
 
 ```bash
-Clone Repository
 git clone https://github.com/krishfr/Full-Stack-ai-chatbot.git
 cd ai-chatbot
+```
 
-Frontend Environment Variables
-
+### Frontend Environment Variables
 Create frontend/.env
 
+```bash
 REACT_APP_API_URL=http://localhost:5000/api
+```
+### Backend Environment Variables
+Create backend/.env (or root .env)
+
+```bash
+PORT=5000
+NODE_ENV=development
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=chatbot_db
+DB_USER=postgres
+DB_PASSWORD=your_password
+
+JWT_SECRET=your-secure-secret
+OPENAI_API_KEY=optional
+CORS_ORIGIN=http://localhost:3000
+```
+
+### Database Setup (Docker)
+Start PostgreSQL using Docker:
+
+```bash
+docker-compose up -d postgres
+```
+### Run Backend
+```bash
+cd backend
+npm install
+npm run dev
+```
+### Run Frontend
+```bash
+cd backend
+npm install
+npm run dev
+```
+### Application runs at
+```bash
+http://localhost:3000
+```
+### Install Ollama (Local AI)
+Download from:
+```bash
+https://ollama.com/download
+```
+### Pull Ollama Model
+```bash
+ollama pull phi3:mini
+```
+### Start Ollama Service
+```bash
+ollama serve
+```
+### Ollama runs at
+```bash
+http://127.0.0.1:11434
+```
+
+### Run Without OpenAI
+Do not set OPENAI_API_KEY
+Ollama is used if available
+Demo fallback activates automatically
+
+### Docker Deployment(Full Stack)
+```bash
+docker-compose up -d --build
+```
+
