@@ -189,36 +189,21 @@ Backend on port 5000
 
 Frontend on port 3000
 
-Security Features
-
+*Security Features*
 bcrypt password hashing
-
 JWT-based authentication
-
 Protected API routes
-
 Helmet security headers
-
 CORS origin control
-
 Parameterized SQL queries
-
 Environment-based secrets
-
 Known Limitations
-
 No WebSockets, HTTP polling only
-
 Text-only chat
-
 Long conversations not truncated
 
-Future Improvements
-
+*Future Improvements*
 WebSocket support
-
 Redis caching
-
 File uploads
-
 Multi-modal AI
